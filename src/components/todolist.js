@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import TodoTable from './TodoTable';
+import ReactTable from 'react-table-v6';
+import 'react-table-v6/react-table.css';
 
 // export default function Todolist() {
 function Todolist() {
@@ -18,12 +19,33 @@ function Todolist() {
 		setTodos(todos.filter( (_, index) => row !== index ));
 	}
 
+	const columns = [
+		{
+			Header: 'Description',
+			accessor: 'desc'
+		},
+		{
+			Header: 'Date',
+			accessor: 'date'
+		},
+		{
+			Cell: row => (
+				<button onClick={() => deleteTodo(row.index)}>Delete</button>
+			)
+		}
+	]
+
 	return (
 		<div>
 			Date:&nbsp;<input type="date" name="date" value={todo.date} onChange={inputChanged} />
 			&nbsp;Description:&nbsp;<input type="text" name="desc" value={todo.desc} onChange={inputChanged} />			
 			&nbsp;<button onClick={addTodo}>Add</button>
-			<TodoTable todos={todos} deleteTodo={deleteTodo} />
+			<ReactTable 
+				data={todos} 
+				columns={columns} 
+				defaultPageSize={10}
+				filterable={true}
+			/>
 		</div>
 	)
 }
